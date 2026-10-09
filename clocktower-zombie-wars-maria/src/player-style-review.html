@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maria 三风格全武器适配审阅</title>
+    <link rel="stylesheet" href="/player-style-review.css" />
+  </head>
+  <body>
+    <main class="review-shell">
+      <header class="review-header">
+        <div>
+          <p class="eyebrow">MARIA MODEL REVIEW</p>
+          <h1>三种人物风格 × 九把武器</h1>
+          <p class="lede">使用正式枪械资源、真实握点与同步后坐。</p>
+          <p id="reviewStatus" role="status">正在加载 27 组人物与武器适配……</p>
+        </div>
+        <button id="pauseReview" type="button" aria-label="暂停动画">
+          暂停动画
+        </button>
+      </header>
+      <section
+        id="styleWeaponMatrix"
+        class="review-matrix"
+        aria-label="三种人物风格与九把武器适配矩阵"
+        aria-live="polite"
+      ></section>
+      <dialog id="reviewDialog" aria-labelledby="reviewDialogTitle">
+        <div class="dialog-toolbar">
+          <div>
+            <p class="eyebrow">DETAIL REVIEW</p>
+            <h2 id="reviewDialogTitle">适配细节</h2>
+          </div>
+          <button id="closeReviewDialog" type="button">关闭</button>
+        </div>
+        <div id="reviewDialogContent">
+          <canvas
+            id="reviewDialogCanvas"
+            width="1280"
+            height="960"
+            aria-label="放大的角色武器适配预览"
+          ></canvas>
+        </div>
+      </dialog>
+    </main>
+    <script type="module" src="/player-style-review.js"></script>
+  </body>
+</html>

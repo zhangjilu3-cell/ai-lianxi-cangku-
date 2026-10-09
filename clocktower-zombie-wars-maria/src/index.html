@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#171a1b" />
+    <meta
+      name="description"
+      content="玛利亚在星辰钟塔废墟中持续猎杀的俯视生存射击游戏，灵感来自经典 Flash 游戏《僵尸危机5》。"
+    />
+    <meta property="og:title" content="钟塔尸潮｜玛利亚的生存猎杀" />
+    <meta
+      property="og:description"
+      content="保持连杀倍率，解锁设施、火箭筒、喷火枪、直线激光和连续反弹炮。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="钟塔尸潮｜玛利亚的生存猎杀" />
+    <meta
+      name="twitter:description"
+      content="玛利亚主演的经典 Flash 风俯视尸潮射击游戏。"
+    />
+    <meta name="twitter:image" content="/og.png" />
+    <title>钟塔尸潮｜玛利亚的最后防线</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="masthead">
+        <p class="eyebrow">星辰钟塔档案 · 猎杀记录 05</p>
+        <h1>钟塔尸潮</h1>
+        <p class="subtitle">玛利亚的最后防线</p>
+      </header>
+
+      <section class="game-console" aria-label="钟塔尸潮游戏">
+        <div class="clock-ring" aria-hidden="true">
+          <span style="--i:0">Ⅰ</span><span style="--i:1">Ⅱ</span><span style="--i:2">Ⅲ</span>
+          <span style="--i:3">Ⅳ</span><span style="--i:4">Ⅴ</span><span style="--i:5">Ⅵ</span>
+          <span style="--i:6">Ⅶ</span><span style="--i:7">Ⅷ</span><span style="--i:8">Ⅸ</span>
+          <span style="--i:9">Ⅹ</span><span style="--i:10">Ⅺ</span><span style="--i:11">Ⅻ</span>
+        </div>
+        <div
+          id="developerToolbar"
+          class="developer-toolbar"
+          hidden
+          aria-label="开发者调试工具"
+        >
+          <label>
+            本波总数
+            <input id="developerTotalCount" type="number" min="1" max="500" step="1" />
+          </label>
+          <label>
+            场上上限
+            <input id="developerConcurrentLimit" type="number" min="1" max="100" step="1" />
+          </label>
+          <label>
+            跳转波次
+            <input id="developerWave" type="number" min="1" max="999" step="1" />
+          </label>
+          <label>枪械 <select id="developerWeapon"></select></label>
+          <label class="developer-check">
+            <input id="developerInfiniteAmmo" type="checkbox" />
+            无限弹药
+          </label>
+          <label class="developer-check">
+            <input id="developerInvincible" type="checkbox" />
+            无敌模式
+          </label>
+          <button id="applyDeveloperSettings" type="button">应用并清场</button>
+          <button id="openDeveloperReward" type="button" disabled>打开奖励</button>
+          <output id="developerStatus" role="status" aria-live="polite"></output>
+        </div>
+        <div class="screen-frame">
+          <canvas id="game" width="1600" height="900" tabindex="-1" aria-label="游戏战场"></canvas>
+          <div id="hud" class="hud" hidden>
+            <div class="hud-cluster">
+              <span class="hud-label">玛利亚</span>
+              <div class="health-meters">
+                <div id="shieldMeter" class="meter shield-meter" hidden aria-label="护盾 0 / 20"><i id="shieldFill"></i></div>
+                <div class="meter"><i id="healthFill"></i></div>
+              </div>
+              <span id="healthText">100</span>
+            </div>
+            <div id="dodgeIndicator" class="dodge-indicator ready" aria-label="翻滚已就绪">
+              <span>空格</span>
+              <small>翻滚</small>
+            </div>
+            <div class="hud-center">
+              <span id="scoreText">00000000</span>
+              <strong id="comboText">×1</strong>
+              <small id="waveText">波次 01</small>
+            </div>
+            <div class="ultimate-status" id="ultimateStatus">
+              <span>雷电爆发 <b id="ultimateTimer">第30波解锁</b></span>
+              <strong id="lightningCount">蓄能 ×1</strong>
+            </div>
+            <div id="bossBar" class="boss-bar" hidden>
+              <span>噩梦首领</span>
+              <div class="boss-meter"><i id="bossHealthFill"></i></div>
+            </div>
+            <div id="weaponBar" class="weapon-bar"></div>
+          </div>
+
+
+
+          <button
+            id="tankTrialEntry"
+            class="tank-trial-entry"
+            type="button"
+            hidden
+          >进入坦克试炼</button>
+
+          <section
+            id="tankTrialStatus"
+            class="tank-trial-status"
+            role="status"
+            aria-label="坦克试炼进度"
+            aria-live="polite"
+            hidden
+          >
+            <div
+              class="tank-trial-art tank-trial-art-compact"
+              data-tank-trial-art
+              role="img"
+              aria-label="坦克碎片收集进度"
+            >
+              <img
+                class="tank-trial-art-base"
+                src="/tank-trial-fragments.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <img class="tank-trial-fragment" data-trial-fragment="1" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+              <img class="tank-trial-fragment" data-trial-fragment="2" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+              <img class="tank-trial-fragment" data-trial-fragment="3" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+              <img class="tank-trial-fragment" data-trial-fragment="4" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+              <img class="tank-trial-fragment" data-trial-fragment="5" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+            </div>
+            <div class="tank-trial-status-copy">
+              <strong id="tankTrialStage">坦克试炼 1/5</strong>
+              <span id="tankTrialFragmentsText">碎片 0/5</span>
+              <span id="tankTrialScore">手枪积分 0000 / 2000</span>
+              <small>仅限手枪</small>
+            </div>
+          </section>
+
+          <div
+            id="tankTrialResult"
+            class="tank-trial-result"
+            role="status"
+            aria-live="assertive"
+            hidden
+          ></div>
+
+          <section
+            id="rewardDialog"
+            class="reward-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="rewardDialogTitle"
+            aria-describedby="rewardDialogDescription"
+            hidden
+          >
+            <div class="reward-panel">
+              <p id="rewardWaveLabel" class="reward-wave-label"></p>
+              <h2 id="rewardDialogTitle">选择成长路线</h2>
+              <p id="rewardDialogDescription">
+                先选择人物成长或枪械成长，再从三个词条中选择一个。
+              </p>
+              <div
+                id="rewardCategoryChoices"
+                class="reward-cards reward-categories"
+              ></div>
+              <div
+                id="rewardTraitChoices"
+                class="reward-cards reward-traits"
+                hidden
+              ></div>
+              <p id="rewardStatus" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+
+          <section
+            id="tankTrialDialog"
+            class="tank-trial-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tankTrialDialogTitle"
+            aria-describedby="tankTrialDialogDescription"
+            hidden
+          >
+            <div class="tank-trial-card">
+              <div
+                class="tank-trial-art"
+                data-tank-trial-art
+                role="img"
+                aria-label="五块尚未收集的坦克碎片"
+              >
+                <img
+                  class="tank-trial-art-base"
+                  src="/tank-trial-fragments.png"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <img class="tank-trial-fragment" data-trial-fragment="1" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+                <img class="tank-trial-fragment" data-trial-fragment="2" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+                <img class="tank-trial-fragment" data-trial-fragment="3" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+                <img class="tank-trial-fragment" data-trial-fragment="4" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+                <img class="tank-trial-fragment" data-trial-fragment="5" src="/tank-trial-fragments.png" alt="" aria-hidden="true" />
+              </div>
+              <div class="tank-trial-copy">
+                <span class="tank-trial-kicker">五段装甲契约</span>
+                <h2 id="tankTrialDialogTitle">坦克试炼</h2>
+                <p id="tankTrialDialogDescription">
+                  一切的恐惧都源自于火力不足，现在有一个机会摆在你的面前，是否同意进入试炼
+                </p>
+                <div class="tank-trial-actions">
+                  <button
+                    id="declineTankTrial"
+                    class="tank-trial-button tank-trial-button-secondary"
+                    type="button"
+                    autofocus
+                  >不同意</button>
+                  <button
+                    id="acceptTankTrial"
+                    class="tank-trial-button tank-trial-button-primary"
+                    type="button"
+                  >同意</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="titlePanel" class="overlay title-panel">
+            <div class="title-copy">
+              <span class="chapter">THE ASTRAL SIEGE</span>
+              <h2>猎杀，直到钟声停息。</h2>
+              <p>
+                尸潮正从噩梦边缘逼近。独自在扩大的钟塔废墟中生存，
+                累计积分并突破更高波次，逐步解锁武器、机枪塔与坦克。
+              </p>
+              <p id="atlasStatus" class="asset-status" data-state="loading" role="status">
+                正在加载丧尸与枪械素材……
+              </p>
+              <button id="startButton" class="primary-button" disabled>开始猎杀</button>
+              <label class="developer-toggle">
+                开发者模式
+                <input id="developerModeToggle" type="checkbox" />
+              </label>
+              <div class="record-line">
+                <span>最高分 <b id="highScore">00000000</b></span>
+                <span>最高波次 <b id="highWave">00</b></span>
+              </div>
+            </div>
+            <div class="maria-portrait">
+              <img src="/maria-reference.png" alt="玛利亚女士三视图参考" />
+              <div class="portrait-mask"></div>
+            </div>
+          </section>
+
+          <section id="pausePanel" class="overlay small-panel" hidden>
+            <span class="chapter">猎杀暂停</span>
+            <h2>钟摆仍在等待</h2>
+            <button id="resumeButton" class="primary-button">继续猎杀</button>
+            <button id="restartFromPause" class="text-button">重新开始</button>
+          </section>
+
+          <section id="gameOverPanel" class="overlay small-panel" hidden>
+            <span class="chapter">猎杀结束</span>
+            <h2 id="resultTitle">猎人倒在了尸潮之中</h2>
+            <div class="result-grid">
+              <span>得分 <b id="resultScore">0</b></span>
+              <span>波次 <b id="resultWave">0</b></span>
+              <span>击杀 <b id="resultKills">0</b></span>
+              <span>最高倍率 <b id="resultCombo">×1</b></span>
+            </div>
+            <button id="restartButton" class="primary-button">再次猎杀</button>
+            <button id="backButton" class="text-button">返回标题</button>
+          </section>
+        </div>
+      </section>
+
+      <section class="briefing">
+        <div>
+          <span class="briefing-label">移动</span>
+          <strong>W A S D</strong>
+        </div>
+        <div>
+          <span class="briefing-label">闪避</span>
+          <strong>空格：翻滚</strong>
+        </div>
+        <div>
+          <span class="briefing-label">瞄准 / 使用</span>
+          <strong>鼠标 / 左键</strong>
+        </div>
+        <div>
+          <span class="briefing-label">换弹 / 暂停</span>
+          <strong>R / Esc</strong>
+        </div>
+        <div>
+          <span class="briefing-label">切换装备</span>
+          <strong>1—9、0 / 滚轮</strong>
+        </div>
+      </section>
+      <p class="touch-warning">此版本需要键盘与鼠标；移动设备将在后续版本适配。</p>
+    </main>
+    <script type="module" src="/game.js"></script>
+  </body>
+</html>

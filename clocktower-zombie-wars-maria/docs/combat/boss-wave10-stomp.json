@@ -1,0 +1,1612 @@
+{
+  "schema_version": "1.0.0",
+  "skill_id": "boss_wave10_stomp",
+  "name": "撼地践踏",
+  "status": "parameter_spec_partial_runtime_integrated",
+  "scope_assumption": "第10关的圆形技能指 stomp；上一条未完成描述尚未作为故障结论。",
+  "units": {
+    "fps": 60,
+    "frame_zero": "beginBossMove",
+    "frame_intervals": "inclusive",
+    "distance": "canvas_world_px",
+    "angles": "radians",
+    "curve_time": "normalized emitter age or keyframe interval, clamped 0..1",
+    "color": "sRGB hex"
+  },
+  "verified_baseline": {
+    "wave": 10,
+    "archetype": "zombie",
+    "boss_scale": 1.8,
+    "move": "stomp",
+    "radius_px": 155,
+    "damage": 22,
+    "windup_seconds": 1.1,
+    "active_seconds": 0.3,
+    "recovery_seconds": 1.2,
+    "impact_seconds_from_start": 1.166,
+    "source_files": [
+      "src/game-core.js",
+      "src/boss-combat.js",
+      "src/boss-effects.js"
+    ]
+  },
+  "timeline": {
+    "duration_frames": 156,
+    "phases": [
+      {
+        "id": "warning",
+        "frames": [
+          0,
+          65
+        ],
+        "gameplay_state": "windup",
+        "hitbox": false,
+        "ground_radius_px": 155,
+        "aim_lock_frame": 0,
+        "warning_alpha_keys": [
+          [
+            0,
+            0.1
+          ],
+          [
+            42,
+            0.19
+          ],
+          [
+            65,
+            0.24
+          ]
+        ],
+        "outline_width_px": 3,
+        "corner_badge": false,
+        "pulse_hz_keys": [
+          [
+            0,
+            1.3
+          ],
+          [
+            48,
+            1.3
+          ],
+          [
+            65,
+            3.2
+          ]
+        ]
+      },
+      {
+        "id": "release",
+        "frames": [
+          66,
+          69
+        ],
+        "gameplay_state": "active",
+        "hitbox": false,
+        "ground_radius_px": 155,
+        "anticipation_warning_persists": true
+      },
+      {
+        "id": "hit",
+        "frames": [
+          70,
+          73
+        ],
+        "gameplay_state": "active",
+        "damage_frame": 70,
+        "hitbox": {
+          "shape": "circle",
+          "center": "locked_boss_ground_origin",
+          "radius_px": 155,
+          "target_body_radius": true,
+          "once_per_target": true,
+          "wall_occlusion": "existing_boss_combat_rule"
+        },
+        "telegraph_remove_frame": 70,
+        "damage": 22,
+        "extra_damage_ticks": 0
+      },
+      {
+        "id": "residual",
+        "frames": [
+          74,
+          155
+        ],
+        "gameplay_states": [
+          {
+            "frames": [
+              74,
+              83
+            ],
+            "state": "active"
+          },
+          {
+            "frames": [
+              84,
+              155
+            ],
+            "state": "recovery"
+          }
+        ],
+        "hitbox": false,
+        "ai_resume_frame": 104,
+        "residual_vfx_end_frame": 109,
+        "additional_ground_hazard": false,
+        "ai_resume_mode": "navigation_only_until_recovery_and_global_cooldown_end"
+      }
+    ]
+  },
+  "animation": {
+    "coordinate_space": "2D ground root plus sprite offset",
+    "root_anchor": "beginBossMove.originX/originY",
+    "pose_adapter": "Original authored keyframes remain design targets. runtime_binding.actual_pose_samples contains implemented body transform samples; foot/COM/silhouette need a rig adapter.",
+    "keyframes": [
+      {
+        "frame": 0,
+        "pose": {
+          "id": "idle",
+          "lean_rad": 0,
+          "lift_px": 0,
+          "scale_xy": [
+            1,
+            1
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.5,
+          0.76
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.24,
+            -0.06,
+            0.22,
+            0.76
+          ],
+          "arm_body_gap_px": 8,
+          "foot_separation_px": 22
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "smoothstep",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 18,
+        "pose": {
+          "id": "plant_right_foot",
+          "lean_rad": -0.03,
+          "lift_px": -3,
+          "scale_xy": [
+            1.02,
+            0.98
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.58,
+          0.8
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.3,
+            -0.06,
+            0.25,
+            0.8
+          ],
+          "arm_body_gap_px": 8,
+          "foot_separation_px": 22
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "smoothstep",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 42,
+        "pose": {
+          "id": "raise_left_leg",
+          "lean_rad": -0.06,
+          "lift_px": -12,
+          "scale_xy": [
+            0.97,
+            1.06
+          ],
+          "left_foot_height_px": 10,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.6,
+          0.73
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.28,
+            -0.14,
+            0.3,
+            0.78
+          ],
+          "arm_body_gap_px": 14,
+          "foot_separation_px": 22
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "smoothstep",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 65,
+        "pose": {
+          "id": "ready",
+          "lean_rad": -0.08,
+          "lift_px": -18,
+          "scale_xy": [
+            0.94,
+            1.12
+          ],
+          "left_foot_height_px": 18,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.62,
+          0.7
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.26,
+            -0.18,
+            0.34,
+            0.78
+          ],
+          "arm_body_gap_px": 14,
+          "foot_separation_px": 22
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "ease_out_quad",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 66,
+        "pose": {
+          "id": "downstroke",
+          "lean_rad": -0.08,
+          "lift_px": -18,
+          "scale_xy": [
+            0.94,
+            1.12
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.62,
+          0.7
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.26,
+            -0.18,
+            0.34,
+            0.78
+          ],
+          "arm_body_gap_px": 14,
+          "foot_separation_px": 22
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "linear",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 70,
+        "pose": {
+          "id": "contact",
+          "lean_rad": 0.12,
+          "lift_px": 10,
+          "scale_xy": [
+            1.17,
+            0.82
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.48,
+          0.87
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.4,
+            0.08,
+            0.38,
+            0.83
+          ],
+          "arm_body_gap_px": 8,
+          "foot_separation_px": 30
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "ease_out_quad",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 74,
+        "pose": {
+          "id": "recoil",
+          "lean_rad": 0.08,
+          "lift_px": 6,
+          "scale_xy": [
+            1.1,
+            0.9
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.5,
+          0.83
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.36,
+            0.02,
+            0.32,
+            0.82
+          ],
+          "arm_body_gap_px": 8,
+          "foot_separation_px": 30
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "smoothstep",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 84,
+        "pose": {
+          "id": "settle",
+          "lean_rad": 0.03,
+          "lift_px": 3,
+          "scale_xy": [
+            1.04,
+            0.96
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.5,
+          0.8
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.3,
+            0,
+            0.28,
+            0.8
+          ],
+          "arm_body_gap_px": 8,
+          "foot_separation_px": 30
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "smoothstep",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 120,
+        "pose": {
+          "id": "recover",
+          "lean_rad": 0.015,
+          "lift_px": 1,
+          "scale_xy": [
+            1.02,
+            0.98
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.5,
+          0.78
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.26,
+            0,
+            0.24,
+            0.78
+          ],
+          "arm_body_gap_px": 8,
+          "foot_separation_px": 22
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "smoothstep",
+        "cancel_window": {
+          "locomotion": false,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 148,
+        "pose": {
+          "id": "ready_to_walk",
+          "lean_rad": 0,
+          "lift_px": 0,
+          "scale_xy": [
+            1,
+            1
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.5,
+          0.76
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.24,
+            0,
+            0.22,
+            0.76
+          ],
+          "arm_body_gap_px": 8,
+          "foot_separation_px": 22
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "smoothstep",
+        "cancel_window": {
+          "locomotion": true,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      },
+      {
+        "frame": 155,
+        "pose": {
+          "id": "idle",
+          "lean_rad": 0,
+          "lift_px": 0,
+          "scale_xy": [
+            1,
+            1
+          ],
+          "left_foot_height_px": 0,
+          "right_foot_height_px": 0
+        },
+        "center_of_mass_normalized_xy": [
+          0.5,
+          0.76
+        ],
+        "silhouette": {
+          "bounds_normalized_xyxy": [
+            -0.24,
+            0,
+            0.22,
+            0.76
+          ],
+          "arm_body_gap_px": 8,
+          "foot_separation_px": 22
+        },
+        "root_motion_px": [
+          0,
+          0
+        ],
+        "curve_to_next": "linear",
+        "cancel_window": {
+          "locomotion": true,
+          "other_skill": false,
+          "death": true,
+          "freeze": "pause_clock"
+        }
+      }
+    ],
+    "cancel_policy": {
+      "voluntary_new_skill_frames": [],
+      "voluntary_locomotion_frames": [
+        148,
+        155
+      ],
+      "death_frames": [
+        0,
+        155
+      ],
+      "freeze_frames": [
+        0,
+        155
+      ],
+      "ordinary_hit_reaction_interrupt": false,
+      "locomotion_cancel_actions": [
+        "remove_stomp_pose",
+        "keep_remaining_non_damaging_vfx",
+        "resume_navigation"
+      ],
+      "death_cancel_actions": [
+        "disable_pending_damage",
+        "stop_warning_emitters",
+        "stop_loop_audio",
+        "fade_remaining_vfx_in_6_frames"
+      ]
+    }
+  },
+  "curves": {
+    "linear": {
+      "interpolation": "linear",
+      "keys": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    "smoothstep": {
+      "formula": "3*t*t-2*t*t*t",
+      "domain": [
+        0,
+        1
+      ]
+    },
+    "ease_out_quad": {
+      "formula": "1-(1-t)*(1-t)",
+      "domain": [
+        0,
+        1
+      ]
+    },
+    "speed_decelerate": {
+      "interpolation": "linear",
+      "keys": [
+        [
+          0,
+          1
+        ],
+        [
+          0.25,
+          0.7
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    "fade_in_out": {
+      "interpolation": "linear",
+      "keys": [
+        [
+          0,
+          0
+        ],
+        [
+          0.15,
+          1
+        ],
+        [
+          0.65,
+          0.8
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    "flash_decay": {
+      "interpolation": "linear",
+      "keys": [
+        [
+          0,
+          1
+        ],
+        [
+          0.2,
+          0.65
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    }
+  },
+  "vfx": {
+    "coordinate_space": "locked_boss_ground_origin",
+    "warning_clip": {
+      "shape": "circle",
+      "radius_px": 155,
+      "fill_rule": "evenodd"
+    },
+    "pooling": true,
+    "offscreen_cull_margin_px": 180,
+    "emit_once_on_frame_crossing": true,
+    "layers": {
+      "core": [
+        {
+          "id": "warning_cracks",
+          "emitter": "radial_polyline",
+          "trigger_frame": 0,
+          "quantity": 5,
+          "lifetime_frames": 70,
+          "speed_px_per_second": 0,
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#E5BD77"
+              ],
+              [
+                0.55,
+                "#C39459"
+              ],
+              [
+                1,
+                "#66503A"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "source-over",
+          "size_px": [
+            2,
+            7
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "grow_frames": [
+            18,
+            65
+          ],
+          "segments_per_polyline": 3,
+          "max_radius_px": 145
+        },
+        {
+          "id": "release_pressure",
+          "emitter": "contracting_annulus",
+          "trigger_frame": 66,
+          "quantity": 1,
+          "lifetime_frames": 4,
+          "speed_px_per_second": -90,
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#FFF1CE"
+              ],
+              [
+                0.3,
+                "#E5BD77"
+              ],
+              [
+                1,
+                "#805F3B"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "screen",
+          "size_px": [
+            3,
+            6
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "radius_curve_px": [
+            [
+              0,
+              92
+            ],
+            [
+              1,
+              86
+            ]
+          ]
+        },
+        {
+          "id": "hit_shockwave",
+          "emitter": "expanding_annulus",
+          "trigger_frame": 70,
+          "quantity": 1,
+          "lifetime_frames": 20,
+          "speed_px_per_second": 420,
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#FFF1CE"
+              ],
+              [
+                0.3,
+                "#E5BD77"
+              ],
+              [
+                1,
+                "#805F3B"
+              ]
+            ]
+          },
+          "alpha_curve": "flash_decay",
+          "blend_mode": "screen",
+          "size_px": [
+            6,
+            1
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "radius_curve_px": [
+            [
+              0,
+              15
+            ],
+            [
+              0.5,
+              115
+            ],
+            [
+              1,
+              155
+            ]
+          ]
+        },
+        {
+          "id": "residual_fissure",
+          "emitter": "ground_polyline",
+          "trigger_frame": 74,
+          "quantity": 5,
+          "lifetime_frames": 36,
+          "speed_px_per_second": 0,
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#AC987C"
+              ],
+              [
+                0.5,
+                "#857562"
+              ],
+              [
+                1,
+                "#594E43"
+              ]
+            ]
+          },
+          "alpha_curve": "flash_decay",
+          "blend_mode": "source-over",
+          "size_px": [
+            2,
+            3
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "segments_per_polyline": 3,
+          "max_radius_px": 145
+        }
+      ],
+      "auxiliary": [
+        {
+          "id": "warning_grit",
+          "emitter": "inward_radial_diamond",
+          "trigger_frame": 18,
+          "quantity": 10,
+          "lifetime_frames": 52,
+          "speed_px_per_second": [
+            8,
+            22
+          ],
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#E5BD77"
+              ],
+              [
+                0.55,
+                "#C39459"
+              ],
+              [
+                1,
+                "#66503A"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "source-over",
+          "size_px": [
+            2,
+            4
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "radial_range_px": [
+            40,
+            140
+          ]
+        },
+        {
+          "id": "release_streaks",
+          "emitter": "foot_convergence_line",
+          "trigger_frame": 66,
+          "quantity": 6,
+          "lifetime_frames": 4,
+          "speed_px_per_second": [
+            80,
+            140
+          ],
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#FFF1CE"
+              ],
+              [
+                0.3,
+                "#E5BD77"
+              ],
+              [
+                1,
+                "#805F3B"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "screen",
+          "size_px": [
+            1,
+            2
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "radial_range_px": [
+            12,
+            35
+          ]
+        },
+        {
+          "id": "hit_stone_chips",
+          "emitter": "ballistic_quad",
+          "trigger_frame": 70,
+          "quantity": 12,
+          "lifetime_frames": 30,
+          "speed_px_per_second": [
+            80,
+            160
+          ],
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#E5BD77"
+              ],
+              [
+                0.55,
+                "#C39459"
+              ],
+              [
+                1,
+                "#66503A"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "source-over",
+          "size_px": [
+            3,
+            7
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "gravity_px_s2": 600,
+          "vertical_launch_px_s": [
+            90,
+            150
+          ],
+          "bounce_count": 1
+        },
+        {
+          "id": "residual_silt",
+          "emitter": "drifting_dot",
+          "trigger_frame": 74,
+          "quantity": 8,
+          "lifetime_frames": 36,
+          "speed_px_per_second": [
+            6,
+            18
+          ],
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#AC987C"
+              ],
+              [
+                0.5,
+                "#857562"
+              ],
+              [
+                1,
+                "#594E43"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "source-over",
+          "size_px": [
+            2,
+            4
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "radial_range_px": [
+            35,
+            130
+          ]
+        }
+      ],
+      "environment": [
+        {
+          "id": "warning_ground_pressure",
+          "emitter": "ground_annulus",
+          "trigger_frame": 0,
+          "quantity": 2,
+          "lifetime_frames": 70,
+          "speed_px_per_second": -35,
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#AC987C"
+              ],
+              [
+                0.5,
+                "#857562"
+              ],
+              [
+                1,
+                "#594E43"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "source-over",
+          "size_px": [
+            2,
+            3
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "alpha_max": 0.14,
+          "radius_curve_px": [
+            [
+              0,
+              145
+            ],
+            [
+              1,
+              85
+            ]
+          ]
+        },
+        {
+          "id": "release_contact_shadow",
+          "emitter": "ground_ellipse",
+          "trigger_frame": 66,
+          "quantity": 1,
+          "lifetime_frames": 4,
+          "speed_px_per_second": 0,
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#201B18"
+              ],
+              [
+                1,
+                "#201B18"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "source-over",
+          "size_px": [
+            32,
+            48
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "ellipse_ratio_y": 0.35,
+          "alpha_max": 0.25
+        },
+        {
+          "id": "hit_dust",
+          "emitter": "radial_soft_polygon",
+          "trigger_frame": 70,
+          "quantity": 8,
+          "lifetime_frames": 36,
+          "speed_px_per_second": [
+            40,
+            85
+          ],
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#AC987C"
+              ],
+              [
+                0.5,
+                "#857562"
+              ],
+              [
+                1,
+                "#594E43"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "source-over",
+          "size_px": [
+            12,
+            24
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "alpha_max": 0.2,
+          "vertices": 8,
+          "shadow_blur_px": 0
+        },
+        {
+          "id": "residual_ground_dust",
+          "emitter": "ground_ellipse",
+          "trigger_frame": 74,
+          "quantity": 4,
+          "lifetime_frames": 36,
+          "speed_px_per_second": [
+            3,
+            8
+          ],
+          "speed_curve": "speed_decelerate",
+          "color_curve": {
+            "interpolation": "linear",
+            "keys": [
+              [
+                0,
+                "#AC987C"
+              ],
+              [
+                0.5,
+                "#857562"
+              ],
+              [
+                1,
+                "#594E43"
+              ]
+            ]
+          },
+          "alpha_curve": "fade_in_out",
+          "blend_mode": "source-over",
+          "size_px": [
+            18,
+            32
+          ],
+          "seed": 1031,
+          "damage": 0,
+          "ellipse_ratio_y": 0.4,
+          "alpha_max": 0.08
+        }
+      ]
+    },
+    "sorting": [
+      "environment",
+      "core",
+      "auxiliary",
+      "boss_sprite",
+      "hit_flash"
+    ],
+    "warning_priority": "boundary above textures; no particle may obscure boundary",
+    "trigger_frames": [
+      0,
+      18,
+      66,
+      70,
+      74
+    ],
+    "visual_only": true
+  },
+  "feedback": {
+    "hit_stop": {
+      "trigger_frame": 70,
+      "condition": "damage_event_confirmed",
+      "boss_frames": 3,
+      "victim_frames": 4,
+      "pause_actor_animation_and_local_fx": true,
+      "pause_entire_world": false,
+      "collision_event_replay": false
+    },
+    "screen_shake": {
+      "trigger_frame": 70,
+      "condition": "impact_in_view",
+      "duration_frames": 14,
+      "amplitude_px": [
+        3,
+        2
+      ],
+      "frequency_hz": 18,
+      "decay_curve": "flash_decay",
+      "rotation_rad": 0,
+      "seed": 1031,
+      "stack_mode": "max_amplitude",
+      "total_cap_px": 4
+    },
+    "camera": {
+      "trigger_frame": 70,
+      "mode": "2d_canvas_translation",
+      "zoom": 1,
+      "pan_px": [
+        0,
+        0
+      ],
+      "return_frame": 84,
+      "affected_layers": [
+        "world"
+      ],
+      "excluded_layers": [
+        "HUD",
+        "developer_panel"
+      ],
+      "screen_to_world_input_uses_inverse_transform": true
+    },
+    "audio": {
+      "distance_falloff_px": [
+        0,
+        700
+      ],
+      "max_voices_per_skill": 4,
+      "events": [
+        {
+          "frame": 0,
+          "id": "warning_rumble",
+          "synthesis": "filtered_noise",
+          "duration_frames": 66,
+          "filter_hz_curve": [
+            [
+              0,
+              90
+            ],
+            [
+              1,
+              180
+            ]
+          ],
+          "gain_curve": [
+            [
+              0,
+              0.02
+            ],
+            [
+              1,
+              0.1
+            ]
+          ],
+          "loop": false
+        },
+        {
+          "frame": 66,
+          "id": "foot_whoosh",
+          "synthesis": "bandpass_noise",
+          "duration_frames": 4,
+          "filter_hz_curve": [
+            [
+              0,
+              900
+            ],
+            [
+              1,
+              250
+            ]
+          ],
+          "gain_curve": [
+            [
+              0,
+              0.12
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "frame": 70,
+          "id": "ground_thud",
+          "synthesis": "sine_plus_noise",
+          "duration_frames": 24,
+          "pitch_hz_curve": [
+            [
+              0,
+              85
+            ],
+            [
+              0.25,
+              48
+            ],
+            [
+              1,
+              30
+            ]
+          ],
+          "noise_lowpass_hz": 650,
+          "gain_curve": [
+            [
+              0,
+              0.35
+            ],
+            [
+              0.2,
+              0.2
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "frame": 74,
+          "id": "stone_fall",
+          "synthesis": "seeded_noise_bursts",
+          "duration_frames": 18,
+          "burst_offsets_frames": [
+            0,
+            5,
+            11
+          ],
+          "highpass_hz": 800,
+          "gain_curve": [
+            [
+              0,
+              0.08
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "victim_flash": {
+      "trigger_frame": 70,
+      "condition": "damage_event_confirmed",
+      "duration_frames": 6,
+      "color": "#FF5544",
+      "alpha_curve": "flash_decay",
+      "body_pose_interrupt": false
+    }
+  },
+  "ai_after_skill": {
+    "root_motion_during_cast": false,
+    "resume_frame": 104,
+    "navigation_recompute": true,
+    "navigation_recompute_seconds": 0.55,
+    "stomp_cooldown_seconds": 3.5,
+    "stomp_cooldown_begins_at_frame": 84,
+    "next_decision_priority": [
+      {
+        "priority": 0,
+        "condition": "health<=0",
+        "action": "death"
+      },
+      {
+        "priority": 1,
+        "condition": "frozen",
+        "action": "pause"
+      },
+      {
+        "priority": 2,
+        "condition": "slash_in_range_and_line_of_sight_and_cooldown_ready",
+        "action": "slash"
+      },
+      {
+        "priority": 3,
+        "condition": "otherwise",
+        "action": "navigate_to_preferred_range"
+      }
+    ],
+    "preferred_range_px": 75,
+    "max_stationary_seconds_after_recovery": 0.1,
+    "stomp_repeat_while_cooling_down": false,
+    "new_skill_recovery_gate_frame": 156,
+    "recovery_move_speed_multiplier": 0.55
+  },
+  "performance_budget": {
+    "measurement_status": "targets_not_profiled",
+    "reference": "1600x900 Canvas2D 60Hz desktop",
+    "max_live_emitter_instances_per_cast": 28,
+    "max_live_elements_per_cast": 72,
+    "max_polyline_segments_per_cast": 64,
+    "max_draw_operations_per_cast_per_frame": 420,
+    "two_boss_max_live_elements": 144,
+    "vfx_cpu_p95_ms_per_boss": 0.35,
+    "two_boss_vfx_cpu_p95_ms": 0.7,
+    "total_frame_target_ms": 16.67,
+    "max_overdraw_fullscreen_equivalent": 0.35,
+    "max_new_texture_bytes": 0,
+    "max_offscreen_surfaces": 1,
+    "shadow_blur_px": 0,
+    "per_frame_particle_allocations": 0,
+    "lod": [
+      {
+        "level": 0,
+        "distance_px": [
+          0,
+          500
+        ],
+        "particle_multiplier": 1
+      },
+      {
+        "level": 1,
+        "distance_px": [
+          500,
+          900
+        ],
+        "particle_multiplier": 0.5,
+        "environment_dust": false
+      },
+      {
+        "level": 2,
+        "condition": "cpu_budget_exceeded_3_frames",
+        "particle_multiplier": 0.25,
+        "auxiliary_warning_particles": false,
+        "preserve": [
+          "damage_boundary",
+          "countdown",
+          "core_hit_shockwave"
+        ]
+      }
+    ],
+    "max_offscreen_surface_bytes": 65536,
+    "offscreen_surface_scope": "shared 128x128 RGBA8 scratch canvas reused for sequential boss draws",
+    "max_sprite_draw_calls_during_blend": 3
+  },
+  "acceptance": [
+    {
+      "check": "damage_timing",
+      "expected": "one hit at F70 within 1 simulation tick; none F0-69/F71-155"
+    },
+    {
+      "check": "range",
+      "expected": "damage radius 155 plus victim body; warning border 155"
+    },
+    {
+      "check": "cancel",
+      "expected": "death before F70 gives no damage/audio/shake at F70"
+    },
+    {
+      "check": "freeze",
+      "expected": "actor animation and warning keep identical phase during freeze"
+    },
+    {
+      "check": "frame_skip",
+      "expected": "crossed trigger frame emits once; no missed or repeated hit"
+    },
+    {
+      "check": "post_recovery",
+      "expected": "F100 exits crouched attack frame; F104 resumes navigation at 55%; recovery gate ends F156; no repeated damage during recovery"
+    },
+    {
+      "check": "performance",
+      "expected": "profile 120 casts after warmup and report p95; budget numbers are targets until measured"
+    }
+  ],
+  "runtime_binding": {
+    "integrated": [
+      "baseline_damage_and_timing",
+      "recovery_pose",
+      "recovery_sprite_blend",
+      "recovery_locomotion_unlock"
+    ],
+    "not_integrated": [
+      "authored_foot_rig",
+      "COM_and_silhouette_rig",
+      "proposed_emitter_system",
+      "hit_stop",
+      "screen_shake",
+      "camera",
+      "procedural_audio_events"
+    ],
+    "recovery_start_frame": 84,
+    "sprite_blend_complete_frame": 100,
+    "movement_unlock_frame": 104,
+    "next_skill_recovery_gate_frame": 156,
+    "body_deformation_gain": 0.3,
+    "recovery_walk_speed_multiplier": 0.55,
+    "actual_pose_samples": [
+      {
+        "frame": 0,
+        "lean": 0,
+        "lift": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      {
+        "frame": 18,
+        "lean": -0.014605559729526669,
+        "lift": -3.2862509391435006,
+        "scaleX": 0.9967137490608565,
+        "scaleY": 1.006572501878287
+      },
+      {
+        "frame": 42,
+        "lean": -0.055957926371149505,
+        "lift": -12.59053343350864,
+        "scaleX": 0.9874094665664913,
+        "scaleY": 1.0251810668670174
+      },
+      {
+        "frame": 65,
+        "lean": -0.07994546011074936,
+        "lift": -17.987728524918605,
+        "scaleX": 0.9820122714750814,
+        "scaleY": 1.0359754570498372
+      },
+      {
+        "frame": 66,
+        "lean": -0.08,
+        "lift": -18,
+        "scaleX": 0.982,
+        "scaleY": 1.036
+      },
+      {
+        "frame": 70,
+        "lean": 0.11999781262181729,
+        "lift": 9.99982987058579,
+        "scaleX": 1.0509990521361208,
+        "scaleY": 0.9460010207764853
+      },
+      {
+        "frame": 74,
+        "lean": 0.10193269118902838,
+        "lift": 8.594764870257764,
+        "scaleX": 1.043170832848579,
+        "scaleY": 0.9544314107784534
+      },
+      {
+        "frame": 84,
+        "lean": 0.03,
+        "lift": 3,
+        "scaleX": 1.012,
+        "scaleY": 0.988
+      },
+      {
+        "frame": 100,
+        "lean": 0,
+        "lift": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      {
+        "frame": 104,
+        "lean": 0,
+        "lift": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      {
+        "frame": 120,
+        "lean": 0,
+        "lift": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      {
+        "frame": 148,
+        "lean": 0,
+        "lift": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      {
+        "frame": 155,
+        "lean": 0,
+        "lift": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      }
+    ]
+  }
+}

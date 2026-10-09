@@ -1,0 +1,237 @@
+{
+  "status": "runtime_integrated",
+  "fps": 60,
+  "source": "src/boss-combat.js BOSS_RECOVERY_KEYS",
+  "cause": [
+    "attack atlas last frame held for full recovery",
+    "locomotion locked for full recovery",
+    "atlas crouch multiplied by body scale deformation"
+  ],
+  "moves": [
+    {
+      "archetype": "zombie",
+      "move": "slash",
+      "name": "巨尸挥爪",
+      "stand_up_frames": 12,
+      "movement_unlock_frames": 16,
+      "recovery_speed": 0.65,
+      "deformation_gain": 0.65,
+      "original_recovery_seconds": 1,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "zombie",
+      "move": "stomp",
+      "name": "撼地践踏",
+      "stand_up_frames": 16,
+      "movement_unlock_frames": 20,
+      "recovery_speed": 0.55,
+      "deformation_gain": 0.3,
+      "original_recovery_seconds": 1.2,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "zombie",
+      "move": "ring",
+      "name": "墓土回震",
+      "stand_up_frames": 20,
+      "movement_unlock_frames": 24,
+      "recovery_speed": 0.5,
+      "deformation_gain": 0.4,
+      "original_recovery_seconds": 1.5,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "toxic",
+      "move": "toxicBurst",
+      "name": "腐毒喷涌",
+      "stand_up_frames": 14,
+      "movement_unlock_frames": 18,
+      "recovery_speed": 0.55,
+      "deformation_gain": 0.55,
+      "original_recovery_seconds": 1.5,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "toxic",
+      "move": "plague",
+      "name": "腐池投射",
+      "stand_up_frames": 12,
+      "movement_unlock_frames": 16,
+      "recovery_speed": 0.65,
+      "deformation_gain": 0.65,
+      "original_recovery_seconds": 1.4,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "toxic",
+      "move": "spores",
+      "name": "孢子三角阵",
+      "stand_up_frames": 16,
+      "movement_unlock_frames": 20,
+      "recovery_speed": 0.55,
+      "deformation_gain": 0.6,
+      "original_recovery_seconds": 1.7,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "runner",
+      "move": "rush",
+      "name": "猎杀突进",
+      "stand_up_frames": 10,
+      "movement_unlock_frames": 14,
+      "recovery_speed": 0.75,
+      "deformation_gain": 0.5,
+      "original_recovery_seconds": 1.35,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "runner",
+      "move": "feint",
+      "name": "侧闪扑杀",
+      "stand_up_frames": 9,
+      "movement_unlock_frames": 12,
+      "recovery_speed": 0.8,
+      "deformation_gain": 0.5,
+      "original_recovery_seconds": 1.05,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "runner",
+      "move": "pounce",
+      "name": "掠空猎杀",
+      "stand_up_frames": 16,
+      "movement_unlock_frames": 20,
+      "recovery_speed": 0.65,
+      "deformation_gain": 0.45,
+      "original_recovery_seconds": 1.65,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "brute",
+      "move": "slam",
+      "name": "震地重砸",
+      "stand_up_frames": 22,
+      "movement_unlock_frames": 28,
+      "recovery_speed": 0.4,
+      "deformation_gain": 0.45,
+      "original_recovery_seconds": 1.3,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "brute",
+      "move": "fissure",
+      "name": "重锤裂地",
+      "stand_up_frames": 20,
+      "movement_unlock_frames": 26,
+      "recovery_speed": 0.45,
+      "deformation_gain": 0.5,
+      "original_recovery_seconds": 1.5,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "brute",
+      "move": "cross",
+      "name": "十字裂隙",
+      "stand_up_frames": 22,
+      "movement_unlock_frames": 28,
+      "recovery_speed": 0.4,
+      "deformation_gain": 0.45,
+      "original_recovery_seconds": 1.6,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "exploder",
+      "move": "blast",
+      "name": "蓄压爆破",
+      "stand_up_frames": 18,
+      "movement_unlock_frames": 24,
+      "recovery_speed": 0.5,
+      "deformation_gain": 0.5,
+      "original_recovery_seconds": 1.6,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "exploder",
+      "move": "bombard",
+      "name": "定点爆破",
+      "stand_up_frames": 14,
+      "movement_unlock_frames": 18,
+      "recovery_speed": 0.6,
+      "deformation_gain": 0.6,
+      "original_recovery_seconds": 1.5,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "exploder",
+      "move": "meteor",
+      "name": "连锁轰炸",
+      "stand_up_frames": 18,
+      "movement_unlock_frames": 22,
+      "recovery_speed": 0.55,
+      "deformation_gain": 0.55,
+      "original_recovery_seconds": 1.8,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "devil",
+      "move": "barrage",
+      "name": "三连炎弹",
+      "stand_up_frames": 14,
+      "movement_unlock_frames": 18,
+      "recovery_speed": 0.6,
+      "deformation_gain": 0.65,
+      "original_recovery_seconds": 1.4,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "devil",
+      "move": "summon",
+      "name": "血契召唤",
+      "stand_up_frames": 18,
+      "movement_unlock_frames": 22,
+      "recovery_speed": 0.55,
+      "deformation_gain": 0.65,
+      "original_recovery_seconds": 1.1,
+      "gameplay_cooldown_preserved": true
+    },
+    {
+      "archetype": "devil",
+      "move": "orbit",
+      "name": "旋狱火环",
+      "stand_up_frames": 18,
+      "movement_unlock_frames": 22,
+      "recovery_speed": 0.6,
+      "deformation_gain": 0.6,
+      "original_recovery_seconds": 1.6,
+      "gameplay_cooldown_preserved": true
+    }
+  ],
+  "validation": {
+    "node_test_count": 569,
+    "all_pass": true,
+    "freeze_and_death": true,
+    "no_early_new_cast": true,
+    "browser_wave_range": [
+      10,
+      90
+    ],
+    "runtime_exceptions": 0,
+    "visual_capture": "18 skill start/end poses and wave10 recovery samples",
+    "composite_pixel_rgba": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "blend_surface_reused": true,
+    "renderer": "actual drawEnemySprite source, not a separate visualization renderer"
+  },
+  "performance": {
+    "shared_scratch_canvas_count": 1,
+    "scratch_rgba8_bytes": 65536,
+    "sprite_draws_during_blend_max": 3,
+    "sprite_draws_after_blend": 1,
+    "cpu_gpu_frame_time": "not_profiled"
+  }
+}

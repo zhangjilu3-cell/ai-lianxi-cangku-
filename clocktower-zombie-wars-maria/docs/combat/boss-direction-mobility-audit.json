@@ -1,0 +1,49 @@
+{
+  "scope": "Boss facing, skill selection and post-cast locomotion",
+  "phases": {
+    "warning": "lock aim and sprite facing together; preserve all warning durations",
+    "release": "mirror right-facing atlas for left casts; feint heading equals landing heading",
+    "hit": "existing strike timing, hitstop, camera, audio and VFX triggers unchanged",
+    "residual": "existing effects persist independently; blend to walk and reposition after movement unlock"
+  },
+  "parameters": {
+    "rotation_offset_weight": 0.2,
+    "initial_close_defense_bonus": 0.8,
+    "subsequent_close_defense_bonus": 0.1,
+    "repeat_penalty": 2,
+    "repeat_fallback_wait_seconds": 1.2,
+    "reposition_turn_radians": 0.55,
+    "runner_reposition_turn_radians": 0.95,
+    "next_skill_range_fraction": 0.72,
+    "target_replan_distance_px": 40,
+    "route_refresh_seconds": 0.55,
+    "clearance_px": 12
+  },
+  "motion": {
+    "cast_direction": "atan2(locked target - boss); do not retarget during warning or active",
+    "recovery_frames": "BOSS_RECOVERY_KEYS in src/boss-combat.js remains authoritative",
+    "root_motion": "existing swept-obstacle path with recovery speed multiplier; side-step toward next skill range",
+    "cancel_window": "locomotion unlock only; next attack remains gated by original recovery and cooldown",
+    "blend_curve": "existing smoothstep to neutral pose; do not extend crouched attack frame"
+  },
+  "performance_budget": {
+    "additional_emitters": 0,
+    "additional_particles": 0,
+    "additional_sprite_draws": 0,
+    "additional_textures": 0,
+    "reposition_plan_per_boss": 1,
+    "candidate_goals_max": 8,
+    "routing": "reuse existing graph, maximum 98 nodes with current 12 props; no additional per-frame path search"
+  },
+  "validation": {
+    "command": "npm run verify",
+    "tests_passed": 580,
+    "lint": "passed",
+    "build": "passed",
+    "simulation": "all 6 archetypes at waves 10 and 90, 30/60/120 Hz, 90 seconds each; all equipped moves used, post-cast travel >150px",
+    "moving_target": "6 archetypes, 90 seconds each with obstacles; no model overlap; >=2 skills; post-cast travel >200px",
+    "visual": "actual renderer transform tested for both left and right casts",
+    "browser": "Waves 10-90 loaded, wave 10 ran for 20 seconds, six archetype left/right renderer review; no JavaScript exceptions"
+  },
+  "limitation": "2D atlas horizontal mirroring; no new eight-direction animation assets. Movement is intentionally locked during warning, release and initial recovery."
+}

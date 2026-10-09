@@ -1,0 +1,133 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, "Microsoft YaHei", sans-serif;
+  background: #0c1012;
+  color: #eee3c7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% -20%, #35434a 0, transparent 45%),
+    linear-gradient(160deg, #111719, #080a0b 72%);
+}
+
+main {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 34px 0 48px;
+}
+
+header {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #c7a767;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+}
+
+h1,
+#previewStatus {
+  margin: 0;
+}
+
+#previewStatus[data-state="error"] {
+  color: #ff786f;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+button,
+#directionLabel {
+  min-width: 104px;
+  border: 1px solid #786944;
+  border-radius: 6px;
+  padding: 9px 13px;
+  background: #20292c;
+  color: #f5e8c9;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible {
+  border-color: #d4b875;
+  background: #2a3538;
+}
+
+.mode-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mode-controls button[aria-pressed="true"] {
+  border-color: #e2c473;
+  background: #584a28;
+  box-shadow: 0 0 0 2px rgb(226 196 115 / 18%);
+}
+
+.controls[hidden] {
+  display: none;
+}
+
+.weapon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.weapon-card {
+  border: 1px solid #4c5351;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #1c2426, #101416);
+}
+
+.weapon-card h2 {
+  margin: 0;
+  padding: 10px 12px;
+  color: #dfc48b;
+  font-size: 15px;
+}
+
+.weapon-card canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  image-rendering: auto;
+  background:
+    linear-gradient(45deg, #151a1c 25%, transparent 25%),
+    linear-gradient(-45deg, #151a1c 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #151a1c 75%),
+    linear-gradient(-45deg, transparent 75%, #151a1c 75%),
+    #1b2224;
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+@media (max-width: 760px) {
+  .weapon-grid {
+    grid-template-columns: 1fr;
+  }
+}

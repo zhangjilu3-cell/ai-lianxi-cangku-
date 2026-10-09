@@ -1,0 +1,158 @@
+{
+  "status": "runtime_integrated",
+  "scope": {
+    "archetypes": [
+      "zombie",
+      "toxic",
+      "runner",
+      "brute",
+      "exploder",
+      "devil"
+    ],
+    "waves": [
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90
+    ]
+  },
+  "reproduced_failures": [
+    {
+      "id": "rock_wall_pocket",
+      "before": "brute x=-11.6 after radial obstacle push; repeats every tick",
+      "after": "free position must satisfy wall bounds and all obstacle footprints"
+    },
+    {
+      "id": "blocked_melee_goal",
+      "before": "only near-side goal lies inside padded rock; route empty",
+      "after": "8 candidate attack sides and reachable route selection"
+    },
+    {
+      "id": "detour_side_flip",
+      "before": "moving approach angle alternates top/bottom goals without target movement",
+      "after": "preserve reachable attack side until target moves more than 40px or clearance/crowding changes"
+    }
+  ],
+  "runtime_parameters": {
+    "spawn_edge_margin_px": "max(42, boss.radius+14)",
+    "spawn_model_padding_px": "boss.radius+12",
+    "physical_model_padding_px": "boss.radius+2",
+    "arena_body_margin_px": "boss.radius+2",
+    "navigation_model_padding_px": "boss.radius+12",
+    "navigation_nodes_per_prop": 8,
+    "navigation_recompute_seconds": 0.55,
+    "target_move_repath_px": 40,
+    "retained_goal_range_tolerance_px": 20,
+    "paired_spawn_min_center_distance_px": "first.radius+second.radius+24",
+    "no_spawn_slot_action": "defer without consuming queue entry, boss roster index, id or enhancement",
+    "ordinary_enemy_collision": "unchanged"
+  },
+  "verification": {
+    "reproduction_tests_failed_before_fix": 2,
+    "npm_run_verify": {
+      "tests": 577,
+      "passed": 577,
+      "failed": 0,
+      "lint": "passed",
+      "build": "passed"
+    },
+    "safe_spawn_cases": 540,
+    "determinism_repeats": 540,
+    "boss_pair_archetype_combinations": 15,
+    "scene_obstacle_centers_checked": 72,
+    "largest_body_pocket_frame_rates_hz": [
+      30,
+      60,
+      120
+    ],
+    "queue_failure_and_retry": "passed",
+    "browser": {
+      "waves": [
+        "已应用第 10 波",
+        "已应用第 20 波",
+        "已应用第 30 波",
+        "已应用第 40 波",
+        "已应用第 50 波",
+        "已应用第 60 波",
+        "已应用第 70 波",
+        "已应用第 80 波",
+        "已应用第 90 波"
+      ],
+      "errors": [],
+      "spawnAudit": [
+        {
+          "archetype": "zombie",
+          "radius": 30.400000000000002,
+          "overlaps": 0,
+          "outside": 0,
+          "startDistance": 785.5189878525003,
+          "endDistance": 59.0042902790334
+        },
+        {
+          "archetype": "toxic",
+          "radius": 34.2,
+          "overlaps": 0,
+          "outside": 0,
+          "startDistance": 781.3143012707768,
+          "endDistance": 266.6051085284498
+        },
+        {
+          "archetype": "runner",
+          "radius": 26.6,
+          "overlaps": 0,
+          "outside": 0,
+          "startDistance": 788.1751074475773,
+          "endDistance": 55.110161077306685
+        },
+        {
+          "archetype": "brute",
+          "radius": 64.60000000000001,
+          "overlaps": 0,
+          "outside": 0,
+          "startDistance": 734.721365978287,
+          "endDistance": 80.29767484648654
+        },
+        {
+          "archetype": "exploder",
+          "radius": 32.300000000000004,
+          "overlaps": 0,
+          "outside": 0,
+          "startDistance": 783.4165156698073,
+          "endDistance": 265.71523791532337
+        },
+        {
+          "archetype": "devil",
+          "radius": 34.2,
+          "overlaps": 0,
+          "outside": 0,
+          "startDistance": 781.3143012707768,
+          "endDistance": 266.6051085284498
+        }
+      ]
+    }
+  },
+  "performance_bounds": {
+    "scene_props": 12,
+    "maximum_spawn_perimeter_candidates": 103,
+    "maximum_navigation_nodes": 98,
+    "overlap_radial_candidates": 192,
+    "fallback_grid_only_on_unresolved_overlap": true,
+    "steady_free_position_check": "no radial/grid search when already clear",
+    "cpu_gpu_frame_time": "not_profiled"
+  },
+  "changed_files": [
+    "src/boss-combat.js",
+    "src/game.js",
+    "tests/boss-obstacle-spawn.test.mjs",
+    "tests/game.test.mjs"
+  ],
+  "remaining_validation": [
+    "real-device frame time and long-duration play sessions",
+    "new arena layouts need the same collision and reachability regression suite"
+  ]
+}

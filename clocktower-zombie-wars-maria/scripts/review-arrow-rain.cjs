@@ -1,0 +1,53 @@
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const fs=require('node:fs/promises');const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({channel:'msedge',headless:true,timeout:60000,args:['--disable-background-timer-throttling','--disable-backgrounding-occluded-windows','--disable-renderer-backgrounding','--mute-audio']});
+ const report={errors:[],releases:[]};
+ try{
+ const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>report.errors.push(e.message));
+ await page.route(/\/game\.js(?:\?.*)?$/,async route=>{const response=await route.fetch();await route.fulfill({response,body:await response.text()+`
+ window.arrowQA={game:()=>game,developer:()=>developerSession,freeze:false,freezeAt:Infinity,releases:[],frames:[],last:0,render,arrowRainLayout,togglePause};
+ const originalReleaseArrow=releaseArrowCharge;
+ releaseArrowCharge=function(){const ok=originalReleaseArrow();if(ok)arrowQA.releases.push(JSON.parse(JSON.stringify(game.arrowRains.at(-1))));return ok;};
+ const originalArrowFrame=frame;
+ frame=function(now){if(arrowQA.freeze){requestAnimationFrame(frame);return;}const start=performance.now();originalArrowFrame(now);if(arrowQA.last)arrowQA.frames.push({dt:now-arrowQA.last,cpu:performance.now()-start,arrows:game.arrowRains.reduce((n,r)=>n+r.arrows.length,0)});arrowQA.last=now;if(game.arrowRains.some(r=>r.age>=arrowQA.freezeAt))arrowQA.freeze=true;};
+ `});});
+ await page.goto('http://127.0.0.1:4173/?playerModel=upright&modelLab=1&view=side&revision=charged-arrow-rain',{waitUntil:'domcontentloaded',timeout:90000});
+ await page.waitForFunction(()=>window.arrowQA?.game().mode==='playing',null,{polling:100,timeout:90000});await page.waitForTimeout(1500);
+ await page.locator('#developerWeapon').selectOption('lightning');
+ await page.evaluate(()=>{const q=arrowQA,g=q.game();q.developer().infiniteAmmo=false;g.player.ammo.lightning=8;g.player.cooldown=0;g.ultimateTimer=999;g.pendingLightningRings=0;g.lightningRings=[];});
+ const aim=await page.evaluate(()=>{const r=document.querySelector('#game').getBoundingClientRect(),d=arrowQA.game().enemies[0];return {x:r.x+d.x/1600*r.width,y:r.y+d.y/900*r.height};});
+ await page.mouse.move(aim.x,aim.y);await page.mouse.down();await page.waitForTimeout(250);
+ report.holding=await page.evaluate(()=>{const g=arrowQA.game();return {time:g.player.chargeTime,ammo:g.player.ammo.lightning,rains:g.arrowRains.length};});
+ assert.equal(report.holding.ammo,8);assert.equal(report.holding.rains,0);assert.ok(report.holding.time>0&&report.holding.time<2);
+ await page.mouse.up();await page.waitForFunction(()=>arrowQA.releases.length===1,null,{polling:50,timeout:15000});
+ await page.waitForFunction(()=>arrowQA.game().arrowRains.length===0,null,{polling:100,timeout:15000});
+ report.short=await page.evaluate(()=>({rain:arrowQA.releases[0],ammo:arrowQA.game().player.ammo.lightning,damage:JSON.parse(JSON.stringify(arrowQA.game().enemies[0].damageStats))}));
+ assert.equal(report.short.ammo,7);assert.ok(report.short.damage.total>=60);assert.ok(report.short.rain.arrows.length<48);
+ await page.mouse.down();await page.waitForFunction(()=>arrowQA.game().player.chargeTime===2,null,{polling:100,timeout:15000});
+ await page.evaluate(()=>{arrowQA.freeze=true;arrowQA.render();});
+ report.preview=await page.evaluate(()=>arrowQA.arrowRainLayout(2));
+ await page.screenshot({path:'docs/progress/2026-09-18-arrow-rain-charge.png'});
+ await page.evaluate(()=>{arrowQA.freeze=false;arrowQA.last=0;arrowQA.freezeAt=.48;});
+ await page.mouse.up();await page.waitForFunction(()=>arrowQA.freeze&&arrowQA.releases.length===2,null,{polling:50,timeout:15000});
+ await page.screenshot({path:'docs/progress/2026-09-18-arrow-rain-falling.png'});
+ report.full=await page.evaluate(()=>({rain:arrowQA.releases[1],ammo:arrowQA.game().player.ammo.lightning,arcs:arrowQA.game().lightningArcs.length,age:arrowQA.game().arrowRains.at(-1).age}));
+ assert.equal(report.full.rain.arrows.length,48);assert.equal(report.full.ammo,6);assert.equal(report.full.arcs,0);assert.equal(report.full.rain.damage,report.short.rain.damage);
+ assert.deepEqual(report.full.rain.layout,report.preview);assert.ok(report.full.rain.layout.depth>report.short.rain.layout.depth);
+ await page.evaluate(()=>{arrowQA.freeze=false;arrowQA.freezeAt=.95;arrowQA.last=0;});await page.waitForFunction(()=>arrowQA.freeze,null,{polling:50,timeout:15000});
+ await page.screenshot({path:'docs/progress/2026-09-18-arrow-rain-impact.png'});
+ await page.evaluate(()=>{arrowQA.freeze=false;arrowQA.freezeAt=Infinity;arrowQA.last=0;});
+ await page.waitForFunction(()=>arrowQA.game().arrowRains.length===0,null,{polling:100,timeout:15000});
+ report.finalDamage=await page.evaluate(()=>arrowQA.game().enemies[0].damageStats);assert.ok(report.finalDamage.total>report.short.damage.total);
+ await page.mouse.down();await page.waitForTimeout(300);await page.keyboard.press('Escape');await page.mouse.up();
+ report.paused=await page.evaluate(()=>{const g=arrowQA.game();return {mode:g.mode,charge:g.player.chargeWeapon,ammo:g.player.ammo.lightning,rains:g.arrowRains.length};});
+ assert.equal(report.paused.mode,'paused');assert.equal(report.paused.charge,null);assert.equal(report.paused.ammo,6);assert.equal(report.paused.rains,0);
+ await page.locator('#resumeButton').click();await page.mouse.move(aim.x,aim.y);await page.mouse.down();await page.waitForTimeout(200);
+ await page.locator('#developerWeapon').selectOption('pistol');await page.mouse.up();
+ assert.equal(await page.evaluate(()=>arrowQA.releases.length),2);
+ await page.locator('#developerWeapon').selectOption('watermelon');await page.mouse.move(aim.x,aim.y);await page.mouse.down();await page.waitForTimeout(450);
+ assert.equal(await page.evaluate(()=>arrowQA.game().player.chargeWeapon),'watermelon');await page.mouse.up();assert.equal(await page.evaluate(()=>arrowQA.game().player.chargeWeapon),null);
+ report.performance=await page.evaluate(()=>{const f=arrowQA.frames.filter(f=>f.arrows>0);return {frames:f.length,meanFrameMs:f.reduce((n,f)=>n+f.dt,0)/f.length,meanCpuMs:f.reduce((n,f)=>n+f.cpu,0)/f.length,maxArrows:Math.max(...f.map(f=>f.arrows))};});
+ assert.deepEqual(report.errors,[]);report.passed=true;console.log(JSON.stringify({passed:report.passed,shortCount:report.short.rain.arrows.length,fullCount:report.full.rain.arrows.length,damage:report.finalDamage.total,performance:report.performance}));
+ }finally{await fs.writeFile('docs/progress/2026-09-18-arrow-rain.json',JSON.stringify(report,null,2));await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

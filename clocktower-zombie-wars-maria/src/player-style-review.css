@@ -1,0 +1,237 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, "Microsoft YaHei", sans-serif;
+  background: #080d0f;
+  color: #f2ead8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 12% -10%, #3a3030 0, transparent 32%),
+    radial-gradient(circle at 88% 0, #1c3940 0, transparent 36%),
+    linear-gradient(160deg, #11191c, #070a0c 68%);
+}
+
+button {
+  border: 1px solid #8f7546;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: #222d30;
+  color: #f4e7c8;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible {
+  border-color: #e0ba70;
+  background: #2b393c;
+  outline: 2px solid transparent;
+}
+
+.review-shell {
+  width: min(100% - 28px, 2140px);
+  margin: 0 auto;
+  padding: 28px 0 48px;
+}
+
+.review-header {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  border: 1px solid #465154;
+  border-radius: 14px;
+  background: rgb(13 19 21 / 92%);
+  box-shadow: 0 14px 36px rgb(0 0 0 / 28%);
+  backdrop-filter: blur(14px);
+}
+
+.eyebrow,
+h1,
+h2,
+.lede,
+#reviewStatus {
+  margin: 0;
+}
+
+.eyebrow {
+  color: #d5ad61;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+}
+
+h1 {
+  margin-top: 5px;
+  font-size: clamp(24px, 3vw, 40px);
+}
+
+.lede,
+#reviewStatus {
+  margin-top: 7px;
+  color: #aebabc;
+  font-size: 14px;
+}
+
+#reviewStatus[data-state="error"] {
+  color: #ff9b92;
+}
+
+.review-matrix {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(220px, 1fr));
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+.review-card {
+  position: relative;
+  min-width: 220px;
+  overflow: hidden;
+  border: 1px solid #4b5658;
+  border-radius: 12px;
+  background: #182124;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 20%);
+  cursor: zoom-in;
+}
+
+.review-card:focus-visible,
+.review-card[data-state="selected"] {
+  border-color: #e1bd70;
+  box-shadow: 0 0 0 2px rgb(225 189 112 / 32%);
+  outline: none;
+}
+
+.review-card[data-state="error"] {
+  border-color: #b84c4c;
+  color: #ffd2d2;
+  cursor: default;
+}
+
+.card-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 11px 0;
+}
+
+.card-heading h2 {
+  color: #f1dfb6;
+  font-size: 14px;
+}
+
+.card-heading span {
+  color: #91a1a4;
+  font-size: 11px;
+}
+
+.review-card canvas {
+  display: block;
+  width: 220px;
+  height: 180px;
+  background:
+    radial-gradient(circle at 44% 50%, rgb(89 108 111 / 22%), transparent 42%),
+    linear-gradient(45deg, #151b1d 25%, transparent 25%),
+    linear-gradient(-45deg, #151b1d 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #151b1d 75%),
+    linear-gradient(-45deg, transparent 75%, #151b1d 75%),
+    #1d2528;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  background-size: auto, 16px 16px, 16px 16px, 16px 16px, 16px 16px;
+}
+
+.cell-error {
+  min-height: 180px;
+  margin: 0;
+  padding: 28px 14px;
+  color: #ffd2d2;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+dialog {
+  width: min(720px, calc(100vw - 32px));
+  border: 1px solid #b59452;
+  border-radius: 16px;
+  padding: 18px;
+  background: #11191c;
+  color: #eef3f4;
+  box-shadow: 0 30px 90px rgb(0 0 0 / 62%);
+}
+
+dialog[open] {
+  animation: dialog-in 140ms ease-out;
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 74%);
+  backdrop-filter: blur(5px);
+}
+
+.dialog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+#reviewDialogContent,
+#reviewDialogCanvas {
+  width: 100%;
+}
+
+#reviewDialogCanvas {
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle, #253235, #111719 72%);
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@media (max-width: 760px) {
+  .review-header {
+    position: static;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .review-matrix {
+    grid-template-columns: 1fr;
+    overflow-x: visible;
+  }
+
+  .review-card,
+  .review-card canvas {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-card,
+  .review-card *,
+  dialog[open] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
