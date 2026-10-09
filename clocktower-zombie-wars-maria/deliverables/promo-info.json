@@ -1,0 +1,17 @@
+{
+  "title": "钟塔尸潮｜玛利亚的最后防线",
+  "duration_seconds": 33,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "video_codec": "H.264",
+  "audio_codec": "AAC",
+  "content": "六类 Boss 实机演示、中文字幕、片尾标题；本地合成原创节奏配乐",
+  "version": "development demo",
+  "source_local_commit": "e269ce0",
+  "github_source_branch": "codex/ri-improve-20260930-workflow",
+  "github_assets_status": "all game resources and promotional video uploaded and verified by Git blob SHA",
+  "public_release_authorized": true
+}
